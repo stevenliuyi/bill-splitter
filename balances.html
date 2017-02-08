@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block DROPDOWN %}
+  <li class="dropdown-header">SOLUTION</li>
+  <li><a href="#" class="view-result">view payments</a></li>
+{% endblock %}
+
+{% block MAINCONTENT %}
+<div class="scroll-table">
+  <div id="#payment-table">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th width="5%"></th>
+                <th width="15%">name</th>
+                <th width="10%">initial</th>
+                <th width="10%">transfer</th>
+                <th width="10%">final</th>
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in balances %}
+            <tr>
+              <td></td>
+              <td><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ i[0] }}</td>
+              <td>{{ i[1] }}</td>
+              <td>{{ i[2] }}</td>
+              <td>{{ i[1]+i[2] }}</td>
+              <td>
+              {% if i[3] > 0 %}<span class="label label-default">+{% endif %}
+              {% if i[3] < 0 %}<span class="label label-default">-{% endif %}
+              {% if i[3]|abs > 0 %}{{ i[3]|abs }}</span>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            <tr><td colspan=6>
+              <div class="row">
+                <div class="col-md-4"><small>tolerance = $ {{ tolerance }}</small></div>
+                        <div class="col-md-2 col-md-offset-6">
+                          <span class="glyphicon glyphicon-arrow-left back-icon text-muted hover-larger" id="back" title="back"></span>
+                          <span class="glyphicon glyphicon-transfer balance-icon text-muted hover-larger view-result" id="balance-icon" title="view payments"></span>
+                       </div>
+              </div>
+             </td></tr>
+
+             </tbody>
+          </table>
+  </div>
+  <canvas id="payment-graph" width="640" height="480">
+</div>
+
+{% endblock %}

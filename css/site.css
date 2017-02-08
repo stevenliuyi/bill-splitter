@@ -1,0 +1,145 @@
+body {
+  font-family: "Myriad Set Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333333;
+  background-color: #ffffff;
+  /*
+  background: url('../image/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Myriad Set Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+th {
+  font-weight: 100;
+}
+
+.delete-icon,
+.modify-icon,
+.back-icon,
+.add-icon,
+.balance-icon,
+.graph-icon,
+.table-icon {
+  float: left;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+
+.save-icon,
+.cancel-icon {
+  float: left;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.modify-icon {
+  display: none;
+}
+
+#add-row {
+  /*visibility: hidden;*/
+  display: none;
+  vertical-align: middle;
+}
+
+.footer {
+  text-align: right;
+  margin-right: 15px;
+  color: #bbbbbb;
+}
+
+.jumbotron {
+  font-size: 100%;
+  padding: 20px;
+/*
+-webkit-box-shadow: inset 0px 0px 50px 10px rgba(120,120,120,1);
+-moz-box-shadow: inset 0px 0px 50px 10px rgba(120,120,120,1);
+box-shadow: inset 0px 0px 50px 10px rgba(120,120,120,1);
+  background-color:rgba(238,238,238,0.8);*/
+}
+
+/*
+.navbar-default {
+  background-color:rgba(248,248,248,0.8);
+}
+*/
+
+.tooltip-inner {
+  white-space:pre;
+}
+
+.scroll-table {
+  overflow:scroll;
+  overflow-x: hidden;
+}
+
+#toolbar {
+  padding:10px;
+}
+
+.badge {
+  padding: 2px 7px;
+}
+
+.close-btn,
+.method-close-btn {
+  color: #ffffff;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+#payment-methods {
+  display: none;
+}
+
+.top-buffer {
+  margin-top:10px;
+}
+
+.alert {
+  padding: 5px 15px;
+  margin-top: -10px;
+  margin-bottom: 0px;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: &times;
+}
+
+.big {
+  font-size: 120%;
+}
+
+#payment-graph {
+  display: none;
+}
+/*
+body.modal-open .container{
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(1px);
+}
+*/

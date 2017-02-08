@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block DROPDOWN %}
+  <li class="dropdown-header">SOLUTION</li>
+  <li><a href="#" id="view-payments">view payments graph</a></li>
+  <li><a href="#" class="view-balances">view balances</a></li>
+{% endblock %}
+
+{% block MAINCONTENT %}
+
+<div class="scroll-table">
+ <div id="payment-table">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th width="5%"></th>
+                <th width="15%">from</th>
+                <th width="10%"></th>
+                <th width="15%">to</th>
+                <th width="15%">amount</th>
+                <th width="20">pay by</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in results %}
+            <tr>
+              <td></td>
+              <td><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ i.giver }}</td>
+              <td><span class="glyphicon glyphicon-chevron-right"></span></td>
+              <td><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ i.receiver }}</td>
+              <td> $ {{ i.amount }}</td>
+              <td>
+              {% for j in i.methods %}
+                <span class="label label-default">{{ j }}</span>
+              {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+            <tr><td colspan=6>
+              <div class="row">
+                <div class="col-md-4"><small>tolerance = $ {{ tolerance }}</small></div>
+                        <div class="col-md-2 col-md-offset-6">
+                          <span class="glyphicon glyphicon-arrow-left back-icon text-muted hover-larger" id="back" title="back"></span>
+                          <span class="glyphicon glyphicon-eye-open graph-icon text-muted hover-larger" id="graph-icon" title="graph view"></span>
+                          <span class="glyphicon glyphicon-usd balance-icon text-muted hover-larger view-balances" id="balance-icon" title="view balances"></span>
+                       </div>
+              </div>
+             </td></tr>
+             </tbody>
+          </table>
+  </div>
+  <div id="payment-graph">
+
+    <canvas id="payment-graph-canvas" width="640" height="480"></canvas>
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <span class="glyphicon glyphicon-arrow-left back-icon text-muted hover-larger" id="graph-back" title="back"></span>
+        <span class="glyphicon glyphicon-align-justify graph-icon text-muted hover-larger" id="table-icon" title="table view"></span>
+        <span class="glyphicon glyphicon-usd balance-icon text-muted hover-larger view-balances" id="balance-icon" title="view balances"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block ADDITIONAL_JS %}
+  <script src="js/springy.js"></script>
+  <script src="js/springyui.js"></script>
+  <script type="text/javascript">
+        {% include "graph.js" %}
+  </script>
+{% endblock %}

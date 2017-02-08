@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Bill Splitter</title>
+
+    <link href="css/myriad.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/navbar.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+    <link href="css/site.css" rel="stylesheet" type="text/css">
+
+    <script language="Javascript">
+      
+      if (window.opener) {
+        window.opener.location.reload();
+        window.close();
+      };
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="container">
+      <!-- Static navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Bill Splitter <span class="badge">alpha</span></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          {% if username %}
+            <li class="active" id="username"><a href=#>{{ username }}</a></li>
+          {% endif %}
+            <li><a href="{{ url|safe }}">{{ url_linktext }}</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron" id="jumbotron">
+        <h2>Bill Splitter
+        {% if event_name != 'DEFAULT_EVENT' %}
+          <small><span id="eventname">{{ event_name }}</span></small>
+        {% endif %}</h2>
+        <div class="row" id="toolbar">
+          <div class="col-md-2 col-sm-4 col-xs-6">
+
+          {% if event_name != 'DEFAULT_EVENT' %}
+            <div class="btn-group top-buffer">
+          {% endif %}
+
+              <div class="btn-group{% if event_name == 'DEFAULT_EVENT' %} top-buffer{% endif %}">
+                <button id="event" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="choose an event or create a new one">
+                  Event <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  {% for event in event_keys %}
+                  {% if event != 'DEFAULT_EVENT' %}
+                    <li><a href="/?event={{ event }}" class="event" id="event_{{ event }}">{{ event }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if event_keys|length > 1 %}
+                    <li class="divider"></li>
+                  {% endif %}
+                  {% if event_name != 'DEFAULT_EVENT' %}
+                    <li><a href="#" id="delete-event">delete current event</a></li>
+                  {% endif %}
+                  <li><a href="#" id="new-event">new event</a></li>
+                </ul>
+              </div>
+
+              {% if event_name != 'DEFAULT_EVENT' %}
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="">
+                  <span class="glyphicon glyphicon-th-list"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+                  {% block DROPDOWN %}{% endblock %}
+                </ul>
+              </div>
+              {% endif %}
+
+            </div>
+
+          {% if event_name != 'DEFAULT_EVENT' %}
+          </div>
+          {% endif %}
+
+          {% if event_name != 'DEFAULT_EVENT' %}
+          <div class="col-md-5 col-md-offset-5 col-sm-8 col-xs-10">
+            <form action="/calc?event={{ event_name }}"  id="calculate" method="post">
+              <div class="input-group top-buffer">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">tolerance $</button>
+                </span>
+                <input type="text" class="form-control" id="tolerance" name="tolerance" value={% if tolerance|length > 0 %}{{ tolerance }}{% else %}0.0{% endif %}>
+                <input type="text" class="hide" name="show" id="show" value="payments">
+                <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Calculate</button>
+                </span>
+              </div>   
+            </form>
+          </div>
+          {% endif %}
+
+        </div>
+
+      {% block MAINCONTENT %}{% endblock %}
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="alert fade" id="alert-box">
+              <button type="button" class="close" aria-hidden="true" id="close-alert">&times;</button>
+              <span id="alert-message"></span>
+          </div>
+        </div>
+        <div class="col-md-3 col-md-offset-5"><p class="footer">Steven Liu&nbsp;&nbsp;2017</p></div>
+      </div>
+
+    </div> <!-- /container -->
+
+    <span class="hide" id="info" info="{{ info }}"></span>
+
+    <!-- Modal -->
+    <div class="modal fade" id="edit-methods-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">manage payment methods for {{ event_name }}</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <input type="text" id="input-methods" value="{% for k in payment_methods %}{{ k.name }},{% endfor %}" data-role="tagsinput" />
+              </div>
+              <div class="col-md-12"><small>press ⏎ for adding a new method</small></div> 
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="edit-methods-btn">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootbox.min.js"></script>
+    <script src="js/bootstrap-tagsinput.min.js"></script>
+    {% block ADDITIONAL_JS %}{% endblock %}
+    <script src="js/site.js"></script>
+  </body>
+</html>
+{% endautoescape %}

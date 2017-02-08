@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block DROPDOWN %}
+  <li class="dropdown-header">BILL</li>
+  <li><a href="#" data-toggle="modal" data-target="#edit-methods-box" id="edit-methods">payment methods</a></li>
+  <li><a href="#" class="add-record">add a bill</a></li>
+  <li><a href="#" id="delete-records">delete all bills</a></li>
+{% endblock %}
+
+{% block MAINCONTENT %}
+
+<div class="scroll-table">
+          <table class="table table-hover" id="bill-table">
+          {% if event_name != 'DEFAULT_EVENT' %}
+            <thead>
+              <tr>
+                <th width="5%"></th>
+                <th width="20%">name</th>
+                <th width="15%">amount</th>
+                <th width="20%">description</th>
+		<th width="25%">payment methods</th>
+                <th width="15%"></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in records %}
+              <tr class="record-row">
+                <td></td>
+                <td><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{ i.name }}</td>
+                <td>$&nbsp;{{ i.amount }}</td>
+                <td>{{ i.note }}</td>
+		<td>
+                {% for j in i.methods %}
+                  <span class="label label-default">{{ j.name }}</span>
+                {% endfor %}
+		</td>
+                <td>
+                  <div class="delete-icon" title="delete this bill" url="/delete_record?event={{ event_name }}&id={{ i.put().id() }}"></div>
+                  <div class="modify-icon"></div>   
+                </td>
+              </tr>
+            {% endfor %}
+
+              <tr id="addicon-row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+		<td></td>
+                <td><span class='glyphicon glyphicon-plus-sign text-primary add-icon add-record' id="add-icon" title="add a new bill"></span></td>
+              </tr>
+              <tr id="add-row">
+                <form action="/add_record?event={{ event_name }}" method="post" id="form-add">
+                  <td></td>
+                  <td>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="input-name" name="username" value="{% if username: %}{{ username }}{% endif %}">
+                  </div>
+                  </td>
+                  <td><div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" class="form-control" id="input-amount" name="amount">
+                  </div></td>
+                  <td><div class="input-group">
+                    <input type="text" class="form-control" id="input-note" name="note">
+                  </div></td>
+		  <td>
+                    {% for k in payment_methods %}
+                    <span class="label label-primary method-label" id="{{ k.put().id() }}">{{ k.name }} <span class="close-btn">&times;</span></span>
+                    {% endfor %}
+                    <span id="payment-methods">
+                    {% for k in payment_methods %}
+                      <span  id="method_{{ k.put().id() }}">
+                        <input type="text" name="methods" value="{{ k.put().id() }}">
+                      </span>
+                    {% endfor %}
+                    </span>
+                  </td>
+                  <td><span class="glyphicon glyphicon-ok save-icon text-muted hover-larger" title="save"></span> <span class="glyphicon glyphicon-remove cancel-icon text-muted hover-larger" title="cancel"></span></td>
+                </form>
+              </tr>
+            </tbody>
+          {% endif %}
+          </table>
+        </div>
+
+
+{% endblock %}
